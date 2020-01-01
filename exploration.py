@@ -5,14 +5,16 @@ Description: A quick analysis of the train/test dataset.
 Ideas:
     Hashtags should be more important features.
     Most entries have a 'keyword', but only ~2/3 have a location
+    Show length of tweets, any correlation with classification
+    Number of hashtags as a feature
+    Caps locks/punctuation could be important.
+    Using location will almost certainly lead to overfitting.
 """
 
 import os
 import numpy as np
 import pandas as pd
-
-CDIR = os.path.abspath(os.path.dirname(__file__))
-DATA_DIR = os.path.join(CDIR, 'data')
+from extract_data import Extract_Data
 
 
 def main():
@@ -20,8 +22,8 @@ def main():
 
 
 def explore_data():
-    train = load_dataset('train')
-    test = load_dataset('test')
+    data_extractor = Extract_Data()
+    train, test = data_extractor.load_data()
     print('Starting an exploratory data analysis.')
     print('Please see the README.md for more information\n')
     print('Train dataset information:')
@@ -34,17 +36,6 @@ def explore_data():
     print(train.head(3))
     print('First 3 test rows:')
     print(test.head(3))
-
-
-def load_dataset(dset='train'):
-    """
-    Args:
-        dset (str): train or test, default train
-    Returns:
-        pd.Dataframe: desired dataset
-    """
-    fname = os.path.join(DATA_DIR, f'{dset}.csv')
-    return pd.read_csv(fname)
 
 
 if __name__ == '__main__':
