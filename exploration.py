@@ -18,24 +18,30 @@ from extract_data import Extract_Data
 
 
 def main():
-    explore_data()
+    explore = Exploration()
+    explore()
 
+class Exploration(object):
+    def __init__(self):
+        data_extractor = Extract_Data()
+        self.train, self.test = data_extractor.load_data()
 
-def explore_data():
-    data_extractor = Extract_Data()
-    train, test = data_extractor.load_data()
-    print('Starting an exploratory data analysis.')
-    print('Please see the README.md for more information\n')
-    print('Train dataset information:')
-    print(train.info())
-    print()
-    print('Test dataset information:')
-    print(test.info())
-    print()
-    print('First 3 train rows:')
-    print(train.head(3))
-    print('First 3 test rows:')
-    print(test.head(3))
+    def __call__(self):
+        self.print_dataset_stats()
+
+    def print_dataset_stats(self):
+        print('Starting an exploratory data analysis.')
+        print('Please see the README.md for more information\n')
+        print('Train dataset information:')
+        print(self.train.info())
+        print()
+        print('Test dataset information:')
+        print(self.test.info())
+        print()
+        print('First 3 train rows:')
+        print(self.train.head(3))
+        print('First 3 test rows:')
+        print(self.test.head(3))
 
 
 if __name__ == '__main__':
