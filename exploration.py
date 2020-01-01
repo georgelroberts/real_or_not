@@ -13,8 +13,16 @@ DATA_DIR = os.path.join(CDIR, 'data')
 
 
 def main():
+    explore_data()
+
+
+def explore_data():
     train = load_dataset('train')
     test = load_dataset('test')
+    print('Train dataset information:')
+    print(train.info())
+    print('Test dataset information:')
+    print(test.info())
 
 
 def load_dataset(dset='train'):
