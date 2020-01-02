@@ -14,7 +14,10 @@ Ideas:
 import os
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 from extract_data import Extract_Data
+sns.set()
 
 
 def main():
@@ -28,6 +31,7 @@ class Exploration(object):
 
     def __call__(self):
         self.print_dataset_stats()
+        self.number_of_hashtags_stats()
 
     def print_dataset_stats(self):
         print('Starting an exploratory data analysis.')
@@ -42,6 +46,19 @@ class Exploration(object):
         print(self.train.head(3))
         print('First 3 test rows:')
         print(self.test.head(3))
+
+    def number_of_hashtags_stats(self):
+        no_hashtags = self.train['text'].str.count(r'(\#\w+)')
+        plotting_df = pd.DataFrame(columns=['no_hashtags', 'target'])
+        plotting_df['no_hashtags'] = no_hashtags.values
+        plotting_df['target'] = self.train['target'].values
+        off_hist = plotting_df[plotting_df['target']==0]['no_hashtags'].values
+        on_hist = plotting_df[plotting_df['target']==1]['no_hashtags'].values
+        _, (ax1, ax2) = plt.subplots(1, 2, sharex=True, sharey=True)
+        ax1.hist(off_hist, range=(0, 12), density=True)
+        ax2.hist(on_hist, range=(0, 12), density=True)
+        plt.tight_layout()
+        plt.show()
 
 
 if __name__ == '__main__':
