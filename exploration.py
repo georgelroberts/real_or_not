@@ -4,9 +4,8 @@ Date: 01-01-2020
 Description: A quick analysis of the train/test dataset.
 Ideas:
     Most entries have a 'keyword', but only ~2/3 have a location
-    Show length of tweets, any correlation with classification
-    Number of hashtags as a feature
-    Caps locks/punctuation could be important.
+    Number of hashtags as a feature, number of capital letters, punctuation,
+        length of tweets
     Using location will almost certainly lead to overfitting.
 """
 
@@ -32,6 +31,7 @@ class Exploration(object):
         self.print_dataset_stats()
         self.number_of_hashtags_stats()
         self.length_of_tweets_stats()
+        self.number_of_capital_letters_stats()
 
     def print_dataset_stats(self):
         print('Starting an exploratory data analysis.')
@@ -83,6 +83,23 @@ class Exploration(object):
         plt.tight_layout()
         plt.show()
 
+    def number_of_capital_letters_stats(self):
+        no_caps = self.train['text'].str.findall(r'[A-Z]').str.len()
+        plotting_df = pd.DataFrame(columns=['no_caps', 'target'])
+        plotting_df['no_caps'] = no_caps.values
+        plotting_df['target'] = self.train['target'].values
+        off_hist = plotting_df[plotting_df['target']==0]['no_caps'].values
+        on_hist = plotting_df[plotting_df['target']==1]['no_caps'].values
+        _, (ax1, ax2) = plt.subplots(1, 2, sharex=True, sharey=True)
+        max_no = np.max([off_hist.max(), on_hist.max()])
+        ax1.hist(off_hist, range=(0, max_no), density=True)
+        ax2.hist(on_hist, range=(0, max_no), density=True)
+        ax1.set_title('Not a real disaster')
+        ax2.set_title('Real disaster')
+        ax1.set_xlabel('Number of caps')
+        ax2.set_xlabel('Number of caps')
+        plt.tight_layout()
+        plt.show()
 
 if __name__ == '__main__':
     main()
