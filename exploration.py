@@ -49,30 +49,26 @@ class Exploration(object):
 
     def number_of_hashtags_stats(self):
         no_hashtags = self.train['text'].str.count(r'(\#\w+)')
-        plotting_df = pd.DataFrame(columns=['no_hashtags', 'target'])
-        plotting_df['no_hashtags'] = no_hashtags.values
-        plotting_df['target'] = self.train['target'].values
-        off_hist = plotting_df[plotting_df['target']==0]['no_hashtags'].values
-        on_hist = plotting_df[plotting_df['target']==1]['no_hashtags'].values
+        off_hist, on_hist = self.extract_data_df(no_hashtags)
         self.hist_comparison_plotter(off_hist, on_hist, 'No. hashtags')
 
     def length_of_tweets_stats(self):
         tweet_length = self.train['text'].str.len()
-        plotting_df = pd.DataFrame(columns=['tweet_length', 'target'])
-        plotting_df['tweet_length'] = tweet_length.values
-        plotting_df['target'] = self.train['target'].values
-        off_hist = plotting_df[plotting_df['target']==0]['tweet_length'].values
-        on_hist = plotting_df[plotting_df['target']==1]['tweet_length'].values
+        off_hist, on_hist = self.extract_data_df(tweet_length)
         self.hist_comparison_plotter(off_hist, on_hist, 'Tweet Length')
 
     def number_of_capital_letters_stats(self):
         no_caps = self.train['text'].str.findall(r'[A-Z]').str.len()
-        plotting_df = pd.DataFrame(columns=['no_caps', 'target'])
-        plotting_df['no_caps'] = no_caps.values
-        plotting_df['target'] = self.train['target'].values
-        off_hist = plotting_df[plotting_df['target']==0]['no_caps'].values
-        on_hist = plotting_df[plotting_df['target']==1]['no_caps'].values
+        off_hist, on_hist = self.extract_data_df(no_caps)
         self.hist_comparison_plotter(off_hist, on_hist, 'Number of capitals')
+    
+    def extract_data_df(self, data_df):
+        plotting_df = pd.DataFrame(columns=['data', 'target'])
+        plotting_df['data'] = data_df.values
+        plotting_df['target'] = self.train['target'].values
+        off_hist = plotting_df[plotting_df['target']==0]['data'].values
+        on_hist = plotting_df[plotting_df['target']==1]['data'].values
+        return off_hist, on_hist
     
     @staticmethod
     def hist_comparison_plotter(off_hist, on_hist, xlabel):
