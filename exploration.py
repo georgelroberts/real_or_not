@@ -54,16 +54,7 @@ class Exploration(object):
         plotting_df['target'] = self.train['target'].values
         off_hist = plotting_df[plotting_df['target']==0]['no_hashtags'].values
         on_hist = plotting_df[plotting_df['target']==1]['no_hashtags'].values
-        _, (ax1, ax2) = plt.subplots(1, 2, sharex=True, sharey=True)
-        max_no = np.max([off_hist.max(), on_hist.max()])
-        ax1.hist(off_hist, range=(0, max_no), density=True)
-        ax2.hist(on_hist, range=(0, max_no), density=True)
-        ax1.set_title('Not a real disaster')
-        ax2.set_title('Real disaster')
-        ax1.set_xlabel('Number of hashtags')
-        ax2.set_xlabel('Number of hashtags')
-        plt.tight_layout()
-        plt.show()
+        self.hist_comparison_plotter(off_hist, on_hist, 'No. hashtags')
 
     def length_of_tweets_stats(self):
         tweet_length = self.train['text'].str.len()
@@ -72,16 +63,7 @@ class Exploration(object):
         plotting_df['target'] = self.train['target'].values
         off_hist = plotting_df[plotting_df['target']==0]['tweet_length'].values
         on_hist = plotting_df[plotting_df['target']==1]['tweet_length'].values
-        _, (ax1, ax2) = plt.subplots(1, 2, sharex=True, sharey=True)
-        max_no = np.max([off_hist.max(), on_hist.max()])
-        ax1.hist(off_hist, range=(0, max_no), density=True)
-        ax2.hist(on_hist, range=(0, max_no), density=True)
-        ax1.set_title('Not a real disaster')
-        ax2.set_title('Real disaster')
-        ax1.set_xlabel('Tweet length')
-        ax2.set_xlabel('Tweet length')
-        plt.tight_layout()
-        plt.show()
+        self.hist_comparison_plotter(off_hist, on_hist, 'Tweet Length')
 
     def number_of_capital_letters_stats(self):
         no_caps = self.train['text'].str.findall(r'[A-Z]').str.len()
@@ -90,16 +72,21 @@ class Exploration(object):
         plotting_df['target'] = self.train['target'].values
         off_hist = plotting_df[plotting_df['target']==0]['no_caps'].values
         on_hist = plotting_df[plotting_df['target']==1]['no_caps'].values
+        self.hist_comparison_plotter(off_hist, on_hist, 'Number of capitals')
+    
+    @staticmethod
+    def hist_comparison_plotter(off_hist, on_hist, xlabel):
         _, (ax1, ax2) = plt.subplots(1, 2, sharex=True, sharey=True)
         max_no = np.max([off_hist.max(), on_hist.max()])
         ax1.hist(off_hist, range=(0, max_no), density=True)
         ax2.hist(on_hist, range=(0, max_no), density=True)
         ax1.set_title('Not a real disaster')
         ax2.set_title('Real disaster')
-        ax1.set_xlabel('Number of caps')
-        ax2.set_xlabel('Number of caps')
+        ax1.set_xlabel(xlabel)
+        ax2.set_xlabel(xlabel)
         plt.tight_layout()
         plt.show()
+
 
 if __name__ == '__main__':
     main()
