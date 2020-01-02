@@ -19,4 +19,6 @@ class Extract_Data(object):
         self.train = pd.read_csv(self.train_fname)
         self.test = pd.read_csv(self.test_fname)
         return self.train, self.test
-
+    
+    def clean_data(self):
+        pass
