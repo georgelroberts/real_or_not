@@ -3,7 +3,6 @@ Author: G. L. Roberts
 Date: 01-01-2020
 Description: A quick analysis of the train/test dataset.
 Ideas:
-    Hashtags should be more important features.
     Most entries have a 'keyword', but only ~2/3 have a location
     Show length of tweets, any correlation with classification
     Number of hashtags as a feature
@@ -32,6 +31,7 @@ class Exploration(object):
     def __call__(self):
         self.print_dataset_stats()
         self.number_of_hashtags_stats()
+        self.length_of_tweets_stats()
 
     def print_dataset_stats(self):
         print('Starting an exploratory data analysis.')
@@ -55,8 +55,31 @@ class Exploration(object):
         off_hist = plotting_df[plotting_df['target']==0]['no_hashtags'].values
         on_hist = plotting_df[plotting_df['target']==1]['no_hashtags'].values
         _, (ax1, ax2) = plt.subplots(1, 2, sharex=True, sharey=True)
-        ax1.hist(off_hist, range=(0, 12), density=True)
-        ax2.hist(on_hist, range=(0, 12), density=True)
+        max_no = np.max([off_hist.max(), on_hist.max()])
+        ax1.hist(off_hist, range=(0, max_no), density=True)
+        ax2.hist(on_hist, range=(0, max_no), density=True)
+        ax1.set_title('Not a real disaster')
+        ax2.set_title('Real disaster')
+        ax1.set_xlabel('Number of hashtags')
+        ax2.set_xlabel('Number of hashtags')
+        plt.tight_layout()
+        plt.show()
+
+    def length_of_tweets_stats(self):
+        tweet_length = self.train['text'].str.len()
+        plotting_df = pd.DataFrame(columns=['tweet_length', 'target'])
+        plotting_df['tweet_length'] = tweet_length.values
+        plotting_df['target'] = self.train['target'].values
+        off_hist = plotting_df[plotting_df['target']==0]['tweet_length'].values
+        on_hist = plotting_df[plotting_df['target']==1]['tweet_length'].values
+        _, (ax1, ax2) = plt.subplots(1, 2, sharex=True, sharey=True)
+        max_no = np.max([off_hist.max(), on_hist.max()])
+        ax1.hist(off_hist, range=(0, max_no), density=True)
+        ax2.hist(on_hist, range=(0, max_no), density=True)
+        ax1.set_title('Not a real disaster')
+        ax2.set_title('Real disaster')
+        ax1.set_xlabel('Tweet length')
+        ax2.set_xlabel('Tweet length')
         plt.tight_layout()
         plt.show()
 
