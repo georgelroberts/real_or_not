@@ -9,6 +9,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.pipeline import Pipeline
 
+
 class Extract_Data(object):
     def __init__(self):
         self.cdir = os.path.abspath(os.path.dirname(__file__))
