@@ -24,12 +24,15 @@ class Extract_Data(object):
         return self.train, self.test
     
     def get_train_test(self):
+        """ Load data and extract features, returning train X and y,
+        alongside test X """
         self.load_data()
         train_X, test_X = self.extract_feats()
         train_y = self.train['target'].values
         return train_X, train_y, test_X
     
     def extract_feats(self):
+        """ Return the X variables for train and test """
         train_text_df = self.train['text']
         text_clf = self.extraction_pipeline()
         train_X = text_clf.fit_transform(train_text_df.values)
@@ -39,6 +42,7 @@ class Extract_Data(object):
 
     @staticmethod
     def extraction_pipeline():
+        """ Method used to extract features """
         text_clf = Pipeline([
             ('vect', CountVectorizer()),
             ('tdidf', TfidfTransformer())
