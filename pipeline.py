@@ -10,11 +10,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.metrics import f1_score
 
+
 def main():
     pipeline()
 
 
 def pipeline():
+    """ Entire model pipeline, with data extraction, fitting and
+    scoring """
     data_extractor = Extract_Data()
     train_X, train_y, test_X = data_extractor.get_train_test()
     train_X, train_y, cv_X, cv_y = split_train_cv(train_X, train_y)
@@ -34,6 +37,7 @@ def pipeline():
 
 
 def split_train_cv(train_X, train_y):
+    """ Split train into train and cross validation """
     train_X, cv_X, train_y, cv_y = train_test_split(
         train_X, train_y, test_size=0.33, random_state=42)
     return train_X, train_y, cv_X, cv_y
