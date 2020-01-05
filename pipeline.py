@@ -4,6 +4,7 @@ Date: 03-01-2020
 About: Complete pipeline for extracting data, fitting and scoring
 """
 
+import lightgbm as lgb
 from extract_data import Extract_Data
 from scoring import Scoring
 from sklearn.model_selection import train_test_split
@@ -21,7 +22,7 @@ def pipeline():
     data_extractor = Extract_Data()
     train_X, train_y, test_X = data_extractor.get_train_test()
     train_X, train_y, cv_X, cv_y = split_train_cv(train_X, train_y)
-    clf = MultinomialNB()
+    clf = lgb.LGBMClassifier()
     clf.fit(train_X, train_y)
     train_pred = clf.predict(train_X)
     train_f1 = f1_score(train_y, train_pred)
@@ -31,7 +32,7 @@ def pipeline():
     print(f'CV F1 score: {cv_f1:.4f}')
 
     scorer = Scoring()
-    scorer.add_scores('MultinomialNB_default', cv_f1, train_f1)
+    scorer.add_scores('Lightgbm_default', cv_f1, train_f1)
     scorer.print_all_scores()
     return
 
