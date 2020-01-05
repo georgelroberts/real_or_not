@@ -20,7 +20,8 @@ The code is run in Python 3.8, please find the package requirements in requireme
 
 ## How to run
 
-For a run-through of the dataset and information about it, please run 'exploration.py'
+For a run-through of the dataset and information about it, please run 'exploration.py'.
+To start fitting and to look at all the score history (for different models), run 'pipeline.py'.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
