@@ -1,7 +1,9 @@
 """
 Author: G. L. Roberts
 Date: 01-01-2020
-Description: A class to extract/clean datasets
+Description: A class to extract/clean datasets.
+Usage: Initialise class, then run get_train_test() to load datasets
+        and extract features and target (test doesn't have target)
 """
 
 import os
