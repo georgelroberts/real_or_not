@@ -32,12 +32,18 @@ class Scoring(object):
             pickle.dump(self.score_df, f)
 
     def add_scores(self, name, cv_score, train_score):
-        position = len(self.score_df)
-        self.score_df.loc[position] = [name, cv_score, train_score]
-        self.save_df()
+        is_in = self.check_if_in_df(name)
+        if not is_in:
+            position = len(self.score_df)
+            self.score_df.loc[position] = [name, cv_score, train_score]
+            self.save_df()
 
-    def check_if_in_df(self):
-        pass
+    def check_if_in_df(self, name):
+        if self.score_df['model_name'].str.contains(name).sum() > 0:
+            print('Model already in dataframe')
+            return True
+        else:
+            return False
 
     def print_best_score(self):
         pass
