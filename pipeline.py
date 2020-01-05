@@ -2,6 +2,17 @@
 Author: G. L. Roberts
 Date: 03-01-2020
 About: Complete pipeline for extracting data, fitting and scoring
+TODO: Hyperparameter tuning and threshold tuning based on CV
+TODO: Correct spelling of words
+TODO: Add more features (tweet lengths - characters and words, no. uppercase
+        words, no. title case words no. punctuations, no unique words,
+        no. stop words, avg word length, is there such a thing as a
+        score for readability??)
+TODO: Remove URLs
+TODO: Remove HTML tags
+TODO: Use a pretrained model (eg GloVe) for the corpus
+TODO: Try with Bert
+TODO: Train a NN with embedding layer (eg GloVe) and an LSTM layer
 """
 
 import lightgbm as lgb
