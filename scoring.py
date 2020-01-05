@@ -34,6 +34,7 @@ class Scoring(object):
     def add_scores(self, name, cv_score, train_score):
         position = len(self.score_df)
         self.score_df.loc[position] = [name, cv_score, train_score]
+        self.save_df()
 
     def check_if_in_df(self):
         pass
