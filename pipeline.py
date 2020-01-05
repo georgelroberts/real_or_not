@@ -53,7 +53,7 @@ def split_train_cv(train_X, train_y):
 def test_submission(clf, test_X, sub_df, fname):
     test_preds = clf.predict(test_X)
     sub_df['target'] = test_preds
-    results_fname = os.path.join(CDIR, 'results', f'{fname}.csv')
+    results_fname = os.path.join(CDIR, 'submissions', f'{fname}.csv')
     sub_df.to_csv(results_fname, index=False)
 
 
