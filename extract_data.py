@@ -29,9 +29,10 @@ class Extract_Data(object):
         """ Load data and extract features, returning train X and y,
         alongside test X """
         self.load_data()
+        sub_df = self.test[['id']]
         train_X, test_X = self.extract_feats()
         train_y = self.train['target'].values
-        return train_X, train_y, test_X
+        return train_X, train_y, test_X, sub_df
     
     def extract_feats(self):
         """ Return the X variables for train and test """
