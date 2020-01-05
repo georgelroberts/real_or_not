@@ -2,7 +2,10 @@
 Author: G. L. Roberts
 Date: 04-01-2020
 About: Class to add scores and to view scores to a dataframe
-The dataframe has the columns 'model_name', 'cv_f1' and 'train_f1'
+        The dataframe has the columns 'model_name', 'cv_f1' and 'train_f1'
+Usage: Initialise object, then use add_scores() to insert new scores, or
+        print_all_scores() to view all scores. Alternatively, use the
+        self.score_df variable directly.
 """
 
 import os
