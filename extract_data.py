@@ -10,6 +10,7 @@ import os
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.pipeline import Pipeline
+from textblob import TextBlob
 
 
 class Extract_Data(object):
@@ -25,10 +26,11 @@ class Extract_Data(object):
         self.test = pd.read_csv(self.test_fname)
         return self.train, self.test
     
-    def get_train_test(self):
+    def get_train_test(self, clean=True):
         """ Load data and extract features, returning train X and y,
         alongside test X """
         self.load_data()
+        self.clean_data()
         sub_df = self.test[['id']]
         train_X, test_X = self.extract_feats()
         train_y = self.train['target'].values
@@ -53,4 +55,18 @@ class Extract_Data(object):
         return text_clf
 
     def clean_data(self):
-        pass
+        self.make_lowercase()
+        self.correct_spelling()
+        return self.train, self.test
+
+    def make_lowercase(self):
+        self.train['text'] = self.train['text'].str.lower()
+        self.test['text'] = self.test['text'].str.lower()
+    
+    def correct_spelling(self):
+        """ This function takes quite a long time..."""
+        print("Correcting spelling")
+        # Please see https://stackoverflow.com/a/35070548 for spellchecking
+        self.train['text'].apply(lambda txt: ''.join(TextBlob(txt).correct()))
+        self.test['text'].apply(lambda txt: ''.join(TextBlob(txt).correct()))
+        print("Spelling correction done!")
