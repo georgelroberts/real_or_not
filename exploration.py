@@ -27,6 +27,7 @@ class Exploration(object):
     def __init__(self):
         data_extractor = Extract_Data()
         self.train, self.test = data_extractor.load_data()
+        self.train_clean, self.test_clean = data_extractor.clean_data()
 
     def __call__(self):
         # self.print_dataset_stats()
@@ -72,9 +73,9 @@ class Exploration(object):
         on_hist = plotting_df[plotting_df['target']==1]['data'].values
         return off_hist, on_hist
 
-    def most_common_words_hist(self, n_plot=30):
-        on_texts = self.train[self.train['target']==1]['text'].str.split().values
-        off_texts = self.train[self.train['target']==0]['text'].str.split().values
+    def most_common_words_hist(self, n_plot=50):
+        on_texts = self.train_clean[self.train_clean['target']==1]['text'].str.split().values
+        off_texts = self.train_clean[self.train_clean['target']==0]['text'].str.split().values
         on_texts_lst = [item for sublist in on_texts for item in sublist] 
         off_texts_lst = [item for sublist in off_texts for item in sublist] 
         on_texts_hst = Counter(on_texts_lst).most_common(n_plot)
@@ -85,6 +86,9 @@ class Exploration(object):
         on_df.plot(kind='barh', x='word', ax=ax1)
         off_df = pd.DataFrame(off_texts_hst, columns=['word', 'frequency'])
         off_df.plot(kind='barh', x='word', ax=ax2)
+        ax1.set_title('Real disaster')
+        ax2.set_title('Not a real disaster')
+        plt.tight_layout()
         plt.show()
     
     @staticmethod
