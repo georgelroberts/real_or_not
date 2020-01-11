@@ -14,6 +14,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+from collections import Counter
 from extract_data import Extract_Data
 sns.set()
 
@@ -28,10 +29,11 @@ class Exploration(object):
         self.train, self.test = data_extractor.load_data()
 
     def __call__(self):
-        self.print_dataset_stats()
-        self.number_of_hashtags_stats()
-        self.length_of_tweets_stats()
-        self.number_of_capital_letters_stats()
+        # self.print_dataset_stats()
+        # self.number_of_hashtags_stats()
+        # self.length_of_tweets_stats()
+        # self.number_of_capital_letters_stats()
+        self.most_common_words_hist()
 
     def print_dataset_stats(self):
         print('Starting an exploratory data analysis.')
@@ -69,6 +71,21 @@ class Exploration(object):
         off_hist = plotting_df[plotting_df['target']==0]['data'].values
         on_hist = plotting_df[plotting_df['target']==1]['data'].values
         return off_hist, on_hist
+
+    def most_common_words_hist(self, n_plot=30):
+        on_texts = self.train[self.train['target']==1]['text'].str.split().values
+        off_texts = self.train[self.train['target']==0]['text'].str.split().values
+        on_texts_lst = [item for sublist in on_texts for item in sublist] 
+        off_texts_lst = [item for sublist in off_texts for item in sublist] 
+        on_texts_hst = Counter(on_texts_lst).most_common(n_plot)
+        off_texts_hst = Counter(off_texts_lst).most_common(n_plot)
+
+        _, (ax1, ax2) = plt.subplots(1, 2)
+        on_df = pd.DataFrame(on_texts_hst, columns=['word', 'frequency'])
+        on_df.plot(kind='barh', x='word', ax=ax1)
+        off_df = pd.DataFrame(off_texts_hst, columns=['word', 'frequency'])
+        off_df.plot(kind='barh', x='word', ax=ax2)
+        plt.show()
     
     @staticmethod
     def hist_comparison_plotter(off_hist, on_hist, xlabel):
