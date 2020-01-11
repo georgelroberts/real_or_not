@@ -9,7 +9,6 @@ TODO: Add more features (tweet lengths - characters and words, no. uppercase
         no. stop words, avg word length, is there such a thing as a
         score for readability??)
 TODO: Remove URLs
-TODO: Remove HTML tags
 TODO: Use a pretrained model (eg GloVe) for the corpus
 TODO: Try with Bert
 TODO: Train a NN with embedding layer (eg GloVe) and an LSTM layer
@@ -38,7 +37,7 @@ class Pipeline(object):
         train_X, train_y, test_X, sub_df = data_extractor.get_train_test()
         # clf = lgb.LGBMClassifier()
         clf = self.model() 
-        name = 'MultinomialNB_default'
+        name = 'MultinomialNB_default_lowercase'
         self.fit_predict_and_score(train_X, train_y, name, clf)
         self.test_submission(clf, test_X, sub_df, name)
 

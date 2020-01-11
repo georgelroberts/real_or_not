@@ -30,7 +30,8 @@ class Extract_Data(object):
         """ Load data and extract features, returning train X and y,
         alongside test X """
         self.load_data()
-        self.clean_data()
+        if clean:
+            self.clean_data()
         sub_df = self.test[['id']]
         train_X, test_X = self.extract_feats()
         train_y = self.train['target'].values
@@ -56,7 +57,7 @@ class Extract_Data(object):
 
     def clean_data(self):
         self.make_lowercase()
-        self.correct_spelling()
+        # self.correct_spelling()
         return self.train, self.test
 
     def make_lowercase(self):
