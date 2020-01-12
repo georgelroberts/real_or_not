@@ -11,6 +11,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
 from sklearn.pipeline import Pipeline
 from textblob import TextBlob
+from scipy.sparse import hstack
 
 
 class Extract_Data(object):
@@ -30,6 +31,8 @@ class Extract_Data(object):
         """ Load data and extract features, returning train X and y,
         alongside test X """
         self.load_data()
+        self.add_to_train = self.more_feats('train')
+        self.add_to_test = self.more_feats('test')
         if clean:
             self.clean_data()
         sub_df = self.test[['id']]
@@ -42,8 +45,11 @@ class Extract_Data(object):
         train_text_df = self.train['text']
         text_clf = self.extraction_pipeline()
         train_X = text_clf.fit_transform(train_text_df.values)
+        # Use https://stackoverflow.com/a/41948136 to add columns to sparse arr
+        train_X = hstack((train_X, self.add_to_train))
         test_text_df = self.test['text']
         test_X = text_clf.transform(test_text_df.values)
+        test_X = hstack((test_X, self.add_to_test))
         return train_X, test_X
 
     @staticmethod
@@ -54,6 +60,18 @@ class Extract_Data(object):
             ('tdidf', TfidfTransformer())
         ])
         return text_clf
+    
+    def more_feats(self, dset):
+        if dset == 'train':
+            data = self.train['text']
+        elif dset == 'test':
+            data = self.test['text'] 
+        no_caps = data.str.findall(r'[A-Z]').str.len()
+        tweet_length = data.str.len()
+        no_hashtags = data.str.count(r'(\#\w+)')
+        combined = pd.concat([tweet_length, no_caps, no_hashtags], axis=1)
+        combined.columns = ['tweet_length', 'no_caps', 'no_hashtags']
+        return combined
 
     def clean_data(self):
         self.make_lowercase()
