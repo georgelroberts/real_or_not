@@ -3,8 +3,9 @@ Author: G. L. Roberts
 Date: 03-01-2020
 About: Complete pipeline for extracting data, fitting and scoring
 TODO: Hyperparameter tuning and threshold tuning based on CV
-TODO: Try with Bert
-TODO: Train a NN with embedding layer (eg GloVe) and an LSTM layer
+NOTE: I wanted to try with BERT or GloVe, but was unable to get 
+tensorflow to work on my system (even with 3 different python
+versions)
 """
 
 import lightgbm as lgb
