@@ -47,11 +47,10 @@ class Scoring(object):
 
     def check_if_in_df(self, name):
         """ Check if model name already exists in the dataframe """
-        if self.score_df['model_name'].str.contains(name).sum() > 0:
-            print('Model already in dataframe')
-            return True
-        else:
+        if self.score_df['model_name'].str.contains(name).sum() <= 0:
             return False
+        print('Model already in dataframe')
+        return True
 
     def print_best_score(self):
         """ Print only the best score """
