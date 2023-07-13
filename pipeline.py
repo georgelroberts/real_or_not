@@ -37,9 +37,7 @@ class Pipeline(object):
 
     def model(self):
         """ Returns the classifier """
-        # clf = MultinomialNB()
-        clf = lgb.LGBMClassifier()
-        return clf
+        return lgb.LGBMClassifier()
 
     def fit_predict_and_score(self, train_X, train_y, name, clf):
         train_X, train_y, cv_X, cv_y = self.split_train_cv(train_X, train_y)

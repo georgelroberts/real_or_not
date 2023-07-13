@@ -57,11 +57,9 @@ class Extract_Data(object):
     @staticmethod
     def extraction_pipeline():
         """ Method used to extract features """
-        text_clf = Pipeline([
-            ('vect', CountVectorizer()),
-            ('tdidf', TfidfTransformer())
-        ])
-        return text_clf
+        return Pipeline(
+            [('vect', CountVectorizer()), ('tdidf', TfidfTransformer())]
+        )
 
     def more_feats(self, dset):
         if dset == 'train':

@@ -4,6 +4,7 @@ Use exec(open(this_file).read(), {'__file__': this_file}).
 
 This can be used when you must use an existing Python interpreter, not the virtualenv bin/python.
 """
+
 import os
 import site
 import sys
@@ -24,8 +25,7 @@ os.environ["VIRTUAL_ENV"] = base
 
 # add the virtual environments site-package to the host python import mechanism
 IS_PYPY = hasattr(sys, "pypy_version_info")
-IS_JYTHON = sys.platform.startswith("java")
-if IS_JYTHON:
+if IS_JYTHON := sys.platform.startswith("java"):
     site_packages = os.path.join(base, "Lib", "site-packages")
 elif IS_PYPY:
     site_packages = os.path.join(base, "site-packages")
